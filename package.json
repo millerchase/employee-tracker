@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "inquirer": "^9.0.2",
+    "mysql2": "^2.3.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "employee-tracker",
+  "description": "",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/millerchase/employee-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/millerchase/employee-tracker/issues"
+  },
+  "homepage": "https://github.com/millerchase/employee-tracker#readme"
+}
