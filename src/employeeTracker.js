@@ -15,8 +15,8 @@ const employeeTracker = () => {
         'Add Department',
         'Add Role',
         'Add Employee',
-        'Update Employee Role',
-        'Update Employee Manager',
+        "Update Employee's Role",
+        "Update Employee's Manager",
         'Exit'
       ]
     })
@@ -40,10 +40,10 @@ const employeeTracker = () => {
         case 'Add Employee':
           addEmployee();
           break;
-        case 'Update Employee Role':
+        case "Update Employee's Role":
           updateEmployeeRole();
           break;
-        case 'Update Employee Manager':
+        case "Update Employee's Manager":
           updateEmployeeManager();
           break;
         case 'Exit':
