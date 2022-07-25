@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const db = require('../db/connections');
+const db = require('../config/connection');
 const cTable = require('console.table');
 
 const employeeTracker = () => {

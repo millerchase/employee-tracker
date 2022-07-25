@@ -1,4 +1,4 @@
-const db = require('./db/connections');
+const db = require('./config/connection');
 const employeeTracker = require('./src/employeeTracker');
 
 db.connect(err => {
