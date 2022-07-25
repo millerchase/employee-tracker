@@ -16,6 +16,7 @@ const employeeTracker = () => {
         'Add Role',
         'Add Employee',
         'Update Employee Role',
+        'Update Employee Manager',
         'Exit'
       ]
     })
@@ -42,6 +43,9 @@ const employeeTracker = () => {
         case 'Update Employee Role':
           updateEmployeeRole();
           break;
+        case 'Update Employee Manager':
+          updateEmployeeManager();
+          break;
         case 'Exit':
           db.end();
           console.log('\nThank you for using the Employee Tracker!\n');
@@ -54,27 +58,33 @@ const employeeTracker = () => {
 viewAllDepartments = () => {
   db.query('SELECT * FROM departments', (err, res) => {
     if (err) throw err;
-    console.table(res);
+    console.table('\n', res, '\n');
     employeeTracker();
   });
 };
 
 // Query the database for all roles
 viewAllRoles = () => {
-  db.query('SELECT * FROM roles', (err, res) => {
-    if (err) throw err;
-    console.table(res);
-    employeeTracker();
-  });
+  db.query(
+    'SELECT roles.role_id, roles.title, departments.name AS department, roles.salary, departments.department_id FROM roles JOIN departments ON roles.department_id = departments.department_id;',
+    (err, res) => {
+      if (err) throw err;
+      console.table('\n', res, '\n');
+      employeeTracker();
+    }
+  );
 };
 
 // Query the database for all employees
 viewAllEmployees = () => {
-  db.query('SELECT * FROM employees', (err, res) => {
-    if (err) throw err;
-    console.table('\n', res, '\n');
-    employeeTracker();
-  });
+  db.query(
+    `SELECT e.employee_id, e.first_name, e.last_name, roles.title, departments.name AS department, roles.salary, CONCAT(m.first_name, ' ', m.last_name) manager FROM employees m RIGHT JOIN employees e ON e.manager_id = m.employee_id JOIN roles ON e.role_id = roles.role_id JOIN departments ON departments.department_id = roles.department_id`,
+    (err, res) => {
+      if (err) throw err;
+      console.table('\n', res, '\n');
+      employeeTracker();
+    }
+  );
 };
 
 // Add a new department to the database
@@ -203,6 +213,100 @@ addEmployee = () => {
           );
         });
     });
+  });
+};
+
+// Update an employee's role
+updateEmployeeRole = () => {
+  db.query('SELECT * FROM roles', (err, res) => {
+    if (err) throw err;
+    const roles = res.map(role => ({
+      name: role.title,
+      value: role.id
+    }));
+    db.query('SELECT * FROM employees', (err, res) => {
+      if (err) throw err;
+      const employees = res.map(employee => ({
+        name: employee.first_name + ' ' + employee.last_name,
+        value: employee.id
+      }));
+      inquirer
+        .prompt([
+          {
+            name: 'employee',
+            type: 'list',
+            message: 'Which employee would you like to update?',
+            choices: employees
+          },
+          {
+            name: 'newRole',
+            type: 'list',
+            message: 'What is the new role of the employee?',
+            choices: roles
+          }
+        ])
+        .then(res => {
+          db.query(
+            'UPDATE employees SET ? WHERE ?',
+            [
+              {
+                role_id: res.newRole
+              },
+              {
+                id: res.employee
+              }
+            ],
+            (err, response) => {
+              if (err) throw err;
+              console.log(`\n${res.employee} role updated!\n`);
+              employeeTracker();
+            }
+          );
+        });
+    });
+  });
+};
+
+updateEmployeeManager = () => {
+  db.query('SELECT * FROM employees;', (err, res) => {
+    if (err) throw err;
+    const employees = res.map(employee => ({
+      name: employee.first_name + ' ' + employee.last_name,
+      value: employee.id
+    }));
+    inquirer
+      .prompt([
+        {
+          name: 'employee',
+          type: 'list',
+          message: 'Which employee would you like to update?',
+          choices: employees
+        },
+        {
+          name: 'newManager',
+          type: 'list',
+          message: 'Who is the new manager of the employee?',
+          choices: [...employees, { name: 'None', value: null }]
+        }
+      ])
+      .then(res => {
+        db.query(
+          'UPDATE employees SET ? WHERE ?',
+          [
+            {
+              manager_id: res.newManager
+            },
+            {
+              id: res.employee
+            }
+          ],
+          (err, response) => {
+            if (err) throw err;
+            console.log(`\n${res.employee}'s manager updated!\n`);
+            employeeTracker();
+          }
+        );
+      });
   });
 };
 
