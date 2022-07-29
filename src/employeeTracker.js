@@ -305,7 +305,6 @@ updateEmployeeManager = () => {
           ],
           (err, response) => {
             if (err) throw err;
-            console.log(res);
             console.log(`Employee's manager successfully updated!\n`);
             employeeTracker();
           }
