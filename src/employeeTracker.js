@@ -256,12 +256,12 @@ updateEmployeeRole = () => {
                 role_id: res.newRole
               },
               {
-                id: res.employee
+                employee_id: res.employee
               }
             ],
             (err, response) => {
               if (err) throw err;
-              console.log(`\n${res.employee} role updated!\n`);
+              console.log(`\nEmployee's role successfully updated!\n`);
               employeeTracker();
             }
           );
@@ -300,12 +300,13 @@ updateEmployeeManager = () => {
               manager_id: res.newManager
             },
             {
-              id: res.employee
+              employee_id: res.employee
             }
           ],
           (err, response) => {
             if (err) throw err;
-            console.log(`\n${res.employee}'s manager updated!\n`);
+            console.log(res);
+            console.log(`Employee's manager successfully updated!\n`);
             employeeTracker();
           }
         );
