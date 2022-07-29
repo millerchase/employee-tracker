@@ -164,13 +164,13 @@ addEmployee = () => {
     if (err) throw err;
     const roles = res.map(role => ({
       name: role.title,
-      value: role.id
+      value: role.role_id
     }));
     db.query('SELECT * FROM employees', (err, res) => {
       if (err) throw err;
       const employees = res.map(employee => ({
         name: employee.first_name + ' ' + employee.last_name,
-        value: employee.id
+        value: employee.employee_id
       }));
       inquirer
         .prompt([
@@ -225,13 +225,13 @@ updateEmployeeRole = () => {
     if (err) throw err;
     const roles = res.map(role => ({
       name: role.title,
-      value: role.id
+      value: role.role_id
     }));
     db.query('SELECT * FROM employees', (err, res) => {
       if (err) throw err;
       const employees = res.map(employee => ({
         name: employee.first_name + ' ' + employee.last_name,
-        value: employee.id
+        value: employee.employee_id
       }));
       inquirer
         .prompt([
@@ -275,7 +275,7 @@ updateEmployeeManager = () => {
     if (err) throw err;
     const employees = res.map(employee => ({
       name: employee.first_name + ' ' + employee.last_name,
-      value: employee.id
+      value: employee.employee_id
     }));
     inquirer
       .prompt([
