@@ -58,7 +58,8 @@ const employeeTracker = () => {
 viewAllDepartments = () => {
   db.query('SELECT * FROM departments', (err, res) => {
     if (err) throw err;
-    console.table('\n', res, '\n');
+    console.log('\n', 'All Departments:', '\n');
+    console.table(res, '\n');
     employeeTracker();
   });
 };
@@ -69,7 +70,8 @@ viewAllRoles = () => {
     'SELECT roles.role_id, roles.title, departments.name AS department, roles.salary, departments.department_id FROM roles JOIN departments ON roles.department_id = departments.department_id;',
     (err, res) => {
       if (err) throw err;
-      console.table('\n', res, '\n');
+      console.log('\n', 'All Roles:', '\n');
+      console.table(res, '\n');
       employeeTracker();
     }
   );
@@ -81,7 +83,8 @@ viewAllEmployees = () => {
     `SELECT e.employee_id, e.first_name, e.last_name, roles.title, departments.name AS department, roles.salary, CONCAT(m.first_name, ' ', m.last_name) manager FROM employees m RIGHT JOIN employees e ON e.manager_id = m.employee_id JOIN roles ON e.role_id = roles.role_id JOIN departments ON departments.department_id = roles.department_id`,
     (err, res) => {
       if (err) throw err;
-      console.table('\n', res, '\n');
+      console.log('\n', 'All Employees:', '\n');
+      console.table(res, '\n');
       employeeTracker();
     }
   );
@@ -101,7 +104,7 @@ addDepartment = () => {
         {
           name: res.newDepartment
         },
-        (err, res) => {
+        (err, response) => {
           if (err) throw err;
           console.log(`\n${res.newDepartment} department added!\n`);
           employeeTracker();
@@ -116,7 +119,7 @@ addRole = () => {
     if (err) throw err;
     const departments = res.map(department => ({
       name: department.name,
-      value: department.id
+      value: department.department_id
     }));
     inquirer
       .prompt([
@@ -145,7 +148,7 @@ addRole = () => {
             salary: res.salary,
             department_id: res.department
           },
-          (err, res) => {
+          (err, response) => {
             if (err) throw err;
             console.log(`\n${res.title} role added!\n`);
             employeeTracker();
