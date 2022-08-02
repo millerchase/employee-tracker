@@ -12,7 +12,7 @@ Simply clone this repository through your preferred method.
 
 ## Usage
 
-After cloning navigate to the application's file inside the command line and run the command `npm i` to acquire the required modules. Then the application can be ran using the command `npm start` and simply follow the prompts!
+After cloning navigate to the application's file inside the command line and run the command `npm i` to acquire the required modules. Add your own .env file with your personal MySQL data. Then the application can be ran using the command `npm start` and simply follow the prompts!
 
 
 [Untitled_ Jul 28, 2022 10_13 PM.webm](https://user-images.githubusercontent.com/99565080/181675813-9ac30cec-1c21-4625-a16c-5ce9a158f3bd.webm)
